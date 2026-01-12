@@ -7,10 +7,10 @@ path="res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn"
 
 [deps]
 
-files=["res://terrains/tilesets/tileset_16px.res", "res://terrains/levels/Level_0.scn", "res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn"]
+files=["res://terrains/tilesets/tileset_16px.res", "res://terrains/levels/Level_0.scn", "res://terrains/levels/Level_1.scn", "res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn"]
 
 source_file="res://terrains/biu_world.ldtk"
-dest_files=["res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn", "res://terrains/tilesets/tileset_16px.res", "res://terrains/levels/Level_0.scn", "res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn"]
+dest_files=["res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn", "res://terrains/tilesets/tileset_16px.res", "res://terrains/levels/Level_0.scn", "res://terrains/levels/Level_1.scn", "res://.godot/imported/biu_world.ldtk-6bc66da9bfc776595d8afdae461ecebf.scn"]
 
 [params]
 
@@ -30,7 +30,7 @@ use_entity_placeholders=false
 Post Import=""
 tileset_post_import=""
 entities_post_import=""
-level_post_import=""
+level_post_import="uid://cn35tdfgqvh55"
 world_post_import=""
 Debug=""
 force_tileset_reimport=false
