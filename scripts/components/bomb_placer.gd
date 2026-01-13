@@ -12,6 +12,7 @@ func _ready() -> void:
 	ray = RayCast2D.new()
 	ray.enabled = false 
 	add_child(ray)
+	add_to_group("revertable")
 
 func _unhandled_input(event: InputEvent) -> void:
 	var player = get_parent()
@@ -90,3 +91,27 @@ func _draw() -> void:
 	var size = Vector2(tile_size, tile_size)
 	var draw_pos = (facing_direction * tile_size) - (size / 2.0)
 	draw_rect(Rect2(draw_pos, size), color, false, 2.0)
+func record_data() -> Dictionary:
+	var bombs_data = []
+	for bomb in active_bombs:
+		if is_instance_valid(bomb) and bomb.has_method("record_data"):
+			bombs_data.append(bomb.record_data())
+	
+	return {
+		"bombs": bombs_data
+	}
+
+func restore_data(data: Dictionary) -> void:
+	# 1. Clear current bombs
+	var current_list = active_bombs.duplicate()
+	active_bombs.clear()
+	for bomb in current_list:
+		if is_instance_valid(bomb):
+			bomb.queue_free()
+	
+	# 2. Respawn bombs from data
+	if "bombs" in data:
+		for bomb_data in data.bombs:
+			var new_bomb = spawn_bomb_at(bomb_data.pos)
+			if new_bomb.has_method("restore_data"):
+				new_bomb.restore_data(bomb_data)

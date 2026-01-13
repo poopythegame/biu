@@ -22,6 +22,9 @@ var inputs: Dictionary = {
 	"ui_down": Vector2.DOWN
 }
 
+func _ready() -> void:
+	add_to_group("revertable")
+
 func _unhandled_input(event: InputEvent) -> void:
 	# UTILITY INPUTS
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -147,3 +150,10 @@ func apply_knockback(direction: Vector2, distance: int) -> void:
 		else:
 			is_moving = false
 	)
+func record_data() -> Dictionary:
+	return {
+		"position": position
+	}
+
+func restore_data(data: Dictionary) -> void:
+	position = data.position

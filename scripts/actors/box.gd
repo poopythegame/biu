@@ -18,6 +18,7 @@ var _initial_mask: int
 
 func _ready() -> void:
 	add_to_group("box")
+	add_to_group("revertable")
 	_initial_layer = collision_layer
 	_initial_mask = collision_mask
 
@@ -162,3 +163,12 @@ func become_bridge_from_data(w_data: Dictionary) -> void:
 					_water_collider.set_cell(0, _water_cell_pos, -1)
 				else:
 					_water_collider.set_cell(_water_cell_pos, -1)
+func record_data() -> Dictionary:
+	return get_snapshot()
+
+func restore_data(data: Dictionary) -> void:
+	restore_snapshot(data)
+	
+	# Stop any active movement tweens immediately
+	var t = create_tween()
+	t.kill()

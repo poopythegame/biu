@@ -132,7 +132,7 @@ func become_bridge(water_collider: Node) -> void:
 
 func is_floating_object() -> bool:
 	return is_floating
-func get_snapshot() -> Dictionary:
+func record_data() -> Dictionary:
 	return {
 		"type": "bomb",
 		"node": self, # Reference (might become invalid if exploded)
@@ -147,7 +147,7 @@ func get_snapshot() -> Dictionary:
 	}
 
 # Used when the bomb still exists (e.g. undoing a move)
-func restore_snapshot(data: Dictionary) -> void:
+func restore_data(data: Dictionary) -> void:
 	global_position = data.pos
 	
 	if data.is_floating and not is_floating:
