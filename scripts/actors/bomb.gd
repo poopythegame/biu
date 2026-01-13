@@ -132,3 +132,55 @@ func become_bridge(water_collider: Node) -> void:
 
 func is_floating_object() -> bool:
 	return is_floating
+func get_snapshot() -> Dictionary:
+	return {
+		"type": "bomb",
+		"node": self, # Reference (might become invalid if exploded)
+		"pos": global_position,
+		"is_floating": is_floating,
+		"water_data": {
+			"collider": _water_collider,
+			"cell_pos": _water_cell_pos,
+			"source_id": _water_source_id,
+			"atlas_coords": _water_atlas_coords
+		}
+	}
+
+# Used when the bomb still exists (e.g. undoing a move)
+func restore_snapshot(data: Dictionary) -> void:
+	global_position = data.pos
+	
+	if data.is_floating and not is_floating:
+		# Use the same logic as Box to force bridge state
+		# You might need to duplicate 'become_bridge_from_data' here or share a parent script
+		_force_bridge_state(data.water_data)
+	elif not data.is_floating and is_floating:
+		# Assuming you have a restore_water function similar to Box
+		# If not, copy the logic from Box.gd or the existing code block
+		restore_water() 
+
+func restore_water() -> void:
+	if is_instance_valid(_water_collider):
+		if _water_collider is TileMap:
+			_water_collider.set_cell(0, _water_cell_pos, _water_source_id, _water_atlas_coords)
+		elif _water_collider.has_method("set_cell"):
+			_water_collider.set_cell(_water_cell_pos, _water_source_id, _water_atlas_coords)
+	is_floating = false
+	collision_layer = 1 # Or whatever your default is
+	collision_mask = 1
+
+func _force_bridge_state(w_data: Dictionary) -> void:
+	is_floating = true
+	modulate = Color(0.7, 0.7, 0.8)
+	collision_layer = 32
+	collision_mask = 0
+	_water_collider = w_data.collider
+	_water_cell_pos = w_data.cell_pos
+	_water_source_id = w_data.source_id
+	_water_atlas_coords = w_data.atlas_coords
+	
+	if is_instance_valid(_water_collider):
+		if _water_collider is TileMap:
+			_water_collider.set_cell(0, _water_cell_pos, -1)
+		else:
+			_water_collider.set_cell(_water_cell_pos, -1)

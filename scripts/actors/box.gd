@@ -116,3 +116,49 @@ func apply_knockback(dir: Vector2, max_dist: int) -> void:
 	tween.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "global_position", target_pos, 0.4)
 	tween.tween_callback(check_on_water)
+func get_snapshot() -> Dictionary:
+	return {
+		"node": self,
+		"pos": global_position,
+		"is_floating": is_floating,
+		"water_data": {
+			"collider": _water_collider,
+			"cell_pos": _water_cell_pos,
+			"source_id": _water_source_id,
+			"atlas_coords": _water_atlas_coords
+		}
+	}
+
+func restore_snapshot(data: Dictionary) -> void:
+	global_position = data.pos
+	
+	# Handle State Transition: Floating <-> Solid
+	if data.is_floating and not is_floating:
+		# Force into floating state (without needing collision check)
+		become_bridge_from_data(data.water_data)
+	elif not data.is_floating and is_floating:
+		restore_water()
+
+func become_bridge_from_data(w_data: Dictionary) -> void:
+	# Manually set state to floating using saved data
+	is_floating = true
+	modulate = Color(0.7, 0.7, 0.8)
+	remove_from_group("box")
+	collision_layer = 32
+	collision_mask = 0
+	
+	_water_collider = w_data.collider
+	_water_cell_pos = w_data.cell_pos
+	_water_source_id = w_data.source_id
+	_water_atlas_coords = w_data.atlas_coords
+	
+	# Ensure the tile is actually removed (visually)
+	if is_instance_valid(_water_collider):
+		if _water_collider is TileMapLayer or _water_collider is TileMap:
+			# Note: Simplify based on your version, assuming standard set_cell methods
+			if _water_collider.has_method("set_cell"):
+				# Handle TileMap vs TileMapLayer signature differences
+				if _water_collider is TileMap:
+					_water_collider.set_cell(0, _water_cell_pos, -1)
+				else:
+					_water_collider.set_cell(_water_cell_pos, -1)
