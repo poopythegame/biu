@@ -1,7 +1,7 @@
 extends StaticBody2D
 
 # Default recovery time, overwritten by LDtk import
-var recover_time: float = 1.0
+@export var recover_time: float = 1.0
 
 # Store initial layers to restore them later
 var _initial_layer: int

@@ -2821,7 +2821,7 @@
 							"height": 16,
 							"defUid": 287,
 							"px": [136,56],
-							"fieldInstances": [{ "__identifier": "recover_time", "__type": "Float", "__value": 0, "__tile": null, "defUid": 288, "realEditorValues": [] }],
+							"fieldInstances": [{ "__identifier": "recover_time", "__type": "Float", "__value": 3, "__tile": null, "defUid": 288, "realEditorValues": [{ "id": "V_Float", "params": [3] }] }],
 							"__worldX": 584,
 							"__worldY": 856
 						},

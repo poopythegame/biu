@@ -20,10 +20,9 @@ func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 				var new_node = packed_scene.instantiate()
 				new_node.position = entity.position
 				
-				# Check if the entity has fields and the node has the property
-				if "fields" in entity and new_node.get("recover_time") != null:
-					if "recover_time" in entity.fields:
-						new_node.recover_time = entity.fields["recover_time"]
+				# Check if the node has the variable 'recover_time'
+				if "recover_time" in new_node:
+					new_node.recover_time = entity.fields.recover_time
 
 				entity_layer.add_child(new_node)
 				new_node.owner = scene_root
