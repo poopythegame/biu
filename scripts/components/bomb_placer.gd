@@ -92,6 +92,7 @@ func _draw() -> void:
 	var size = Vector2(tile_size, tile_size)
 	var draw_pos = (facing_direction * tile_size) - (size / 2.0)
 	draw_rect(Rect2(draw_pos, size), color, false, 2.0)
+
 func record_data() -> Dictionary:
 	var bombs_data = []
 	for bomb in active_bombs:
@@ -108,6 +109,10 @@ func restore_data(data: Dictionary) -> void:
 	active_bombs.clear()
 	for bomb in current_list:
 		if is_instance_valid(bomb):
+			# FIX: Restore water before destroying if it's a bridge
+			if bomb.has_method("is_floating_object") and bomb.is_floating_object():
+				if bomb.has_method("restore_water"):
+					bomb.restore_water()
 			bomb.queue_free()
 	
 	# 2. Respawn bombs from data
