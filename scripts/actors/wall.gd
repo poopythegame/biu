@@ -1,3 +1,4 @@
+@tool
 extends StaticBody2D
 
 # Default recovery time, overwritten by LDtk import
