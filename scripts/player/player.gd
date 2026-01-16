@@ -52,7 +52,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func on_level_entered() -> void:
 	# Called by Camera2D when entering a new room.
-	
 	# CRITICAL FIX: If we are uncontrolled (knockback), DO NOT save yet.
 	# We might be flying over a void or hazard.
 	if is_knockback_active:
@@ -171,9 +170,26 @@ func apply_knockback(direction: Vector2, distance: int) -> void:
 		query.collide_with_bodies = true
 		
 		var results = space_state.intersect_point(query)
-		if results.size() > 0:
+		
+		# [FIX START] Check results to see if we hit a REAL obstacle or just Water
+		var hit_real_solid = false
+		for result in results:
+			var collider = result.collider
+			
+			# If we hit a TileMap, assume it is Water/Floor and fly over it
+			# We do this because Water is often on the Wall Layer (2)
+			if collider is TileMap or (ClassDB.class_exists("TileMapLayer") and collider.is_class("TileMapLayer")):
+				continue
+			
+			# If we hit a Box or a Wall (Node), we stop.
+			# We assume Walls are StaticBody2D nodes in group "wall" (from wall.gd)
+			hit_real_solid = true
+			break
+		
+		if hit_real_solid:
 			hit_obstacle = true
 			break
+		# [FIX END]
 		
 		valid_distance = i
 
@@ -185,7 +201,7 @@ func apply_knockback(direction: Vector2, distance: int) -> void:
 	
 	# 2. Animation Logic
 	if hit_obstacle:
-		# CRASH: Hard stop! 
+		# CRASH: Hard stop!
 		# We scale the duration so you hit the wall at full speed, 
 		# rather than floating slowly to it.
 		var ratio = float(valid_distance) / float(distance) if distance > 0 else 0.0

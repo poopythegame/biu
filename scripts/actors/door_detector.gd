@@ -11,7 +11,7 @@ func _ready() -> void:
 	monitorable = false
 	
 	# Visual feedback (Start inactive)
-	modulate = Color.WHITE
+	modulate = Color(0.5, 1.5, 0.5)
 
 func _physics_process(_delta: float) -> void:
 	var bodies = get_overlapping_bodies()
@@ -34,4 +34,4 @@ func _update_state(new_state: bool) -> void:
 		if is_active:
 			modulate = Color(0.5, 1.5, 0.5) # Glow Green
 		else:
-			modulate = Color.WHITE
+			modulate = Color(0.5, 1.5, 0.5)
