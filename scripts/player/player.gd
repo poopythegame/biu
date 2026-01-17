@@ -41,6 +41,17 @@ func _ready() -> void:
 		default_scale = sprite.scale
 	else:
 		default_scale = scale
+	
+	# Matches BombPlacer's default 'facing_direction = Vector2.DOWN'
+	var initial_dir = Vector2.DOWN
+	
+	if bomb_placer:
+		bomb_placer.update_direction(initial_dir)
+	
+	if sprite:
+		# Apply the same rotation logic as 'attempt_move'
+		# Assumes sprite texture faces UP (Rotation 0 = UP)
+		sprite.rotation = initial_dir.angle() + PI/2
 
 func _unhandled_input(event: InputEvent) -> void:
 	# UTILITY INPUTS
