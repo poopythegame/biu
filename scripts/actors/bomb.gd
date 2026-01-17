@@ -17,6 +17,22 @@ func explode() -> void:
 		get_parent().add_child(effect)
 
 	var space_state = get_world_2d().direct_space_state
+	
+	# If the bomb is floating (bridge), the player might be standing ON it.
+	# We check the exact center for the player to kill them.
+	if is_floating:
+		var center_query = PhysicsPointQueryParameters2D.new()
+		center_query.position = global_position
+		center_query.collide_with_bodies = true
+		center_query.collision_mask = 1 # Check specifically for Player (Layer 1)
+		
+		var center_results = space_state.intersect_point(center_query)
+		for result in center_results:
+			var collider = result.collider
+			if collider.has_method("die"):
+				print("Player caught in floating bomb explosion!")
+				collider.die()
+
 	var directions = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]
 	
 	# Detect and push targets
