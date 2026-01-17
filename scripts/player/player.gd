@@ -11,6 +11,9 @@ extends Node2D
 @onready var ray: RayCast2D = $RayCast2D
 @onready var bomb_placer: Node2D = $BombPlacer 
 @onready var history_manager: Node = $HistoryManager
+# REFERENCE TO THE VISUAL SPRITE
+# Ensure you have a child node named "Sprite" (or "Sprite2D") for this to work.
+@onready var sprite: Node2D = $Sprite2D
 
 var is_moving: bool = false
 var input_buffer: Vector2 = Vector2.ZERO 
@@ -19,6 +22,7 @@ var _target_pos: Vector2
 
 var is_knockback_active: bool = false
 var has_pending_level_entry: bool = false
+var default_scale: Vector2 = Vector2.ONE # Store original scale here
 
 var inputs: Dictionary = {
 	"ui_right": Vector2.RIGHT,
@@ -30,6 +34,12 @@ var inputs: Dictionary = {
 func _ready() -> void:
 	add_to_group("revertable")
 	_target_pos = position 
+	
+	# Capture the editor-set scale so we don't overwrite it
+	if sprite:
+		default_scale = sprite.scale
+	else:
+		default_scale = scale
 
 func _unhandled_input(event: InputEvent) -> void:
 	# UTILITY INPUTS
@@ -70,6 +80,11 @@ func reset_level() -> void:
 func attempt_move(direction: Vector2) -> void:
 	if bomb_placer:
 		bomb_placer.update_direction(direction)
+	
+	# ROTATE SPRITE TO FACE DIRECTION
+	if sprite:
+		# direction.angle() returns 0 for RIGHT, PI/2 for DOWN, etc.
+		sprite.rotation = direction.angle() + PI/2
 		
 	if is_moving:
 		input_buffer = direction
@@ -278,22 +293,22 @@ func carried_by_box(target_pos: Vector2, duration: float) -> void:
 # VISUALS (JELLY EFFECT)
 # ------------------------------------------------------------------------------
 func _animate_jelly(duration: float) -> void:
-	# NOTE: If your player sprite is a child node (e.g. "Sprite"), 
-	# replace 'self' with '$Sprite' to avoid scaling collision shapes excessively.
-	# Since movement logic disables collision checks while moving, scaling 'self' is mostly safe.
+	# Use the separate sprite if available, otherwise fallback to self
+	var visual_target = sprite if sprite else self
 	
 	var t = create_tween()
 	
 	# 1. Stretch (Start of move)
-	t.tween_property(self, "scale", Vector2(0.8, 1.2), duration * 0.3)\
+	# Multiply against default_scale to preserve editor scaling
+	t.tween_property(visual_target, "scale", default_scale * Vector2(0.8, 1.2), duration * 0.3)\
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	
 	# 2. Squash (Landing/Impact)
-	t.tween_property(self, "scale", Vector2(1.2, 0.8), duration * 0.3)\
+	t.tween_property(visual_target, "scale", default_scale * Vector2(1.2, 0.8), duration * 0.3)\
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	
 	# 3. Return to Normal (Bounce back)
-	t.tween_property(self, "scale", Vector2.ONE, duration * 0.4)\
+	t.tween_property(visual_target, "scale", default_scale, duration * 0.4)\
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 
 # ------------------------------------------------------------------------------
@@ -301,7 +316,9 @@ func _animate_jelly(duration: float) -> void:
 # ------------------------------------------------------------------------------
 func record_data() -> Dictionary:
 	return {
-		"position": _target_pos if is_moving else position
+		"position": _target_pos if is_moving else position,
+		# Optional: save rotation if needed
+		"rotation": sprite.rotation if sprite else 0.0 
 	}
 
 func restore_data(data: Dictionary) -> void:
@@ -311,7 +328,12 @@ func restore_data(data: Dictionary) -> void:
 	# Stop any scale tweens and reset size immediately
 	var t = create_tween()
 	t.kill()
-	scale = Vector2.ONE
+	
+	var visual_target = sprite if sprite else self
+	visual_target.scale = default_scale # Reset to the stored default, NOT Vector2.ONE
+	
+	if sprite and "rotation" in data:
+		sprite.rotation = data.rotation
 	
 	is_moving = false
 	is_knockback_active = false
