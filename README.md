@@ -1,6 +1,6 @@
 # Project Title: biu
 
-Welcome to the development repository! This project is a high-octane action game built in **[Godot 4.5.1 (Mono/C# Edition)](https://godotengine.org/download)**. The core experience revolves around a "destruction-first" philosophy, where players use explosive forces to both dismantle the environment and navigate through it.
+Welcome to the development repository! This project is a puzzle game built in **[Godot 4.5.1 (Mono/C# Edition)](https://godotengine.org/download)** inspired by Sokoban. The core experience revolves around the concepts of water, bomb, and walls. 
 
 ---
 
