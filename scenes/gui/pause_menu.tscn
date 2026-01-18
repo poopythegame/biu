@@ -40,3 +40,10 @@ text = "Resume"
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Save and Quit"
+
+[node name="SettingsButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

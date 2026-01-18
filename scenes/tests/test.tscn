@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://biht6m8hp5ua2"]
+[gd_scene load_steps=9 format=3 uid="uid://biht6m8hp5ua2"]
 
 [ext_resource type="PackedScene" uid="uid://dmobj48t0e52h" path="res://terrains/biu_world.ldtk" id="1_8cg7g"]
 [ext_resource type="PackedScene" uid="uid://d0uk6nmmnjg0l" path="res://scenes/prefabs/fx/ambient_particles.tscn" id="1_ajgsl"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bff2w370b4ou8" path="res://scenes/prefabs/player.tscn" id="2_syyn5"]
 [ext_resource type="Script" uid="uid://cw48i34tff1gk" path="res://scripts/actors/camera_2d.gd" id="3_weoh1"]
 [ext_resource type="PackedScene" uid="uid://3ejdt1uohona" path="res://scenes/prefabs/lighting.tscn" id="5_8ivcm"]
+[ext_resource type="PackedScene" uid="uid://bl446doy4ytog" path="res://scenes/gui/settings.tscn" id="7_k6w2u"]
 
 [sub_resource type="Environment" id="Environment_ajgsl"]
 background_mode = 3
@@ -19,6 +20,8 @@ glow_bloom = 0.2
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("1_weoh1")]
+
+[node name="settings" parent="CanvasLayer" instance=ExtResource("7_k6w2u")]
 
 [node name="biu_world" parent="." instance=ExtResource("1_8cg7g")]
 

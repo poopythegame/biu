@@ -36,8 +36,6 @@ func _ready() -> void:
 	add_to_group("revertable")
 	_target_pos = position 
 	
-<<<<<<< HEAD
-=======
 	# Capture the editor-set scale so we don't overwrite it
 	if sprite:
 		default_scale = sprite.scale
@@ -64,7 +62,6 @@ func _ready() -> void:
 			if history_manager:
 				print("Continue requested: Loading save...")
 				history_manager.load_game_from_disk()
->>>>>>> da5cb401596e0f3a0ce405bca8afdd948b1b3bdd
 
 func _unhandled_input(event: InputEvent) -> void:
 	# UTILITY INPUTS

@@ -3,6 +3,8 @@ extends Control
 @onready var resume_button: Button = $CenterContainer/VBoxContainer/ResumeButton
 # Ensure you add this button in the scene editor!
 @onready var save_quit_button: Button = $CenterContainer/VBoxContainer/SaveQuitButton
+@onready var settings_button: Button = $CenterContainer/VBoxContainer/SettingsButton
+@onready var settings = $"../settings"
 
 func _ready() -> void:
 	visible = false
@@ -13,7 +15,10 @@ func _ready() -> void:
 	
 	if save_quit_button:
 		save_quit_button.pressed.connect(_on_save_quit_pressed)
-
+		
+	if settings_button:
+		settings_button.pressed.connect(_on_settings_button_pressed)
+		
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_toggle_pause()
@@ -41,3 +46,11 @@ func _on_save_quit_pressed() -> void:
 	
 	# 2. Quit
 	get_tree().quit()
+
+
+func _on_settings_button_pressed() -> void:
+	if settings:
+		_toggle_pause()
+		settings.toggle_settings()
+	else:
+		print("no settings in tree, sorry :(")
