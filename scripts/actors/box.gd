@@ -16,6 +16,9 @@ var _water_atlas_coords: Vector2i = Vector2i(-1, -1)
 var _initial_layer: int
 var _initial_mask: int
 
+# Track the tween so we can kill it on undo
+var move_tween: Tween
+
 func _ready() -> void:
 	add_to_group("box")
 	add_to_group("revertable")
@@ -133,10 +136,13 @@ func apply_knockback(dir: Vector2, max_dist: int) -> void:
 		if col.has_method("carried_by_box"):
 			col.carried_by_box(target_pos, 0.4)
 
-	var tween = create_tween()
-	tween.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "global_position", target_pos, 0.4)
-	tween.tween_callback(check_on_water)
+	# Use the class-level tween variable
+	if move_tween: move_tween.kill()
+	move_tween = create_tween()
+	
+	move_tween.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	move_tween.tween_property(self, "global_position", target_pos, 0.4)
+	move_tween.tween_callback(check_on_water)
 
 func get_snapshot() -> Dictionary:
 	# SERIALIZATION FIX: Convert Object reference to NodePath
@@ -157,13 +163,16 @@ func get_snapshot() -> Dictionary:
 	}
 
 func restore_snapshot(data: Dictionary) -> void:
+	# Always restore potential water at current position first.
+	# This ensures we don't leave voids when teleporting from water to water.
+	if is_floating:
+		restore_water()
+	
 	global_position = data.pos
 	
-	# Handle State Transition: Floating <-> Solid
-	if data.is_floating and not is_floating:
+	# Apply saved state regardless of previous state
+	if data.is_floating:
 		become_bridge_from_data(data.water_data)
-	elif not data.is_floating and is_floating:
-		restore_water()
 
 func become_bridge_from_data(w_data: Dictionary) -> void:
 	is_floating = true
@@ -200,6 +209,6 @@ func record_data() -> Dictionary:
 func restore_data(data: Dictionary) -> void:
 	restore_snapshot(data)
 	
-	# Stop any active movement tweens immediately
-	var t = create_tween()
-	t.kill()
+	# Properly kill the specific tween
+	if move_tween:
+		move_tween.kill()
