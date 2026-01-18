@@ -6,6 +6,7 @@ extends StaticBody2D
 @export var tile_size: int = 16 
 
 @export var death_effect_scene: PackedScene
+@export var recovery_clock_scene: PackedScene 
 
 # Store initial layers to restore them later
 var _initial_layer: int
@@ -39,6 +40,22 @@ func destroy() -> void:
 		var effect = death_effect_scene.instantiate()
 		effect.global_position = global_position
 		get_tree().get_root().add_child(effect)
+
+	# Spawn the Recovery Clock
+	if recovery_clock_scene:
+		var clock = recovery_clock_scene.instantiate()
+		# Add to parent (Level) instead of root, so it moves with the level if needed
+		# and stays organized.
+		get_parent().add_child(clock)
+		
+		# Center the clock on the wall. 
+		# If the wall's pivot is Top-Left, add half tile_size. 
+		# If pivot is Center, just use global_position.
+		# Based on death_effect using global_position directly, we use that here.
+		clock.global_position = global_position 
+		
+		if clock.has_method("start"):
+			clock.start(recover_time)
 
 	print("Wall destroyed! Recovering in %s seconds." % recover_time)
 	

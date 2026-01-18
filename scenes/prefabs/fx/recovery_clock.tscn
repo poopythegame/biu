@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://by5iy8j6rvx3c"]
+
+[ext_resource type="Script" uid="uid://c6wq3t4a5yb0f" path="res://scripts/fx/recovery_clock.gd" id="1_pktbb"]
+
+[node name="RecoveryClock" type="Node2D"]
+script = ExtResource("1_pktbb")
+color_inactive = Color(1, 0.67065626, 0.64150834, 1)
+color_active = Color(0.7024058, 1, 0.6825535, 1)
