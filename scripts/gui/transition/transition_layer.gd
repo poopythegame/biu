@@ -5,6 +5,9 @@ const TRANSITION_SHADER = preload("res://scripts/gui/transition/diamond_wipe.gds
 
 @onready var color_rect: ColorRect = $ColorRect
 
+# [NEW] Flag to track if we should load the save file on the next scene load
+var should_load_game: bool = false
+
 func _ready() -> void:
 	# Create ColorRect if it doesn't exist
 	if not color_rect:

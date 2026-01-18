@@ -53,6 +53,16 @@ func _ready() -> void:
 		# Assumes sprite texture faces UP (Rotation 0 = UP)
 		sprite.rotation = initial_dir.angle() + PI/2
 
+	if has_node("/root/TransitionLayer"):
+		var transition = get_node("/root/TransitionLayer")
+		if "should_load_game" in transition and transition.should_load_game:
+			# Reset the flag so we don't load again if the level resets normally
+			transition.should_load_game = false
+			
+			if history_manager:
+				print("Continue requested: Loading save...")
+				history_manager.load_game_from_disk()
+
 func _unhandled_input(event: InputEvent) -> void:
 	# UTILITY INPUTS
 	if event is InputEventKey and event.pressed and not event.echo:
