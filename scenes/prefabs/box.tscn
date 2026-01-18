@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dqqxtudxotl1t"]
 
 [ext_resource type="Script" uid="uid://dtbinvi8ka8ir" path="res://scripts/actors/box.gd" id="1_y1l2d"]
-[ext_resource type="Texture2D" uid="uid://besyv1ynxjkjy" path="res://textures/woodcrate v1.png" id="2_y1l2d"]
+[ext_resource type="Texture2D" uid="uid://besyv1ynxjkjy" path="res://textures/actors/woodcrate v1.png" id="2_y1l2d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_weoh1"]
 size = Vector2(16, 16)

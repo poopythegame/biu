@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chqy703q3qfaw"
-path="res://.godot/imported/bottomv1.png-9d95ca4b83681ed573a54ad8851df959.ctex"
+uid="uid://dgou425hjavvg"
+path="res://.godot/imported/voda_pesok_trava_revision_2.png-11164f49a8aafd7df0945effd1f11551.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/bottomv1.png"
-dest_files=["res://.godot/imported/bottomv1.png-9d95ca4b83681ed573a54ad8851df959.ctex"]
+source_file="res://terrains/textures/voda_pesok_trava_revision_2.png"
+dest_files=["res://.godot/imported/voda_pesok_trava_revision_2.png-11164f49a8aafd7df0945effd1f11551.ctex"]
 
 [params]
 

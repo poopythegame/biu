@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv7u3yxtdpqm3"
-path="res://.godot/imported/small dynamite v1.png-8ad7a28b9a99282ff3fecb673ab0e26b.ctex"
+uid="uid://700gnv4h6qt1"
+path="res://.godot/imported/BIUplayer v1.png-0045d44ae91e8abbd7dfca86071459d7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/small dynamite v1.png"
-dest_files=["res://.godot/imported/small dynamite v1.png-8ad7a28b9a99282ff3fecb673ab0e26b.ctex"]
+source_file="res://textures/actors/BIUplayer v1.png"
+dest_files=["res://.godot/imported/BIUplayer v1.png-0045d44ae91e8abbd7dfca86071459d7.ctex"]
 
 [params]
 

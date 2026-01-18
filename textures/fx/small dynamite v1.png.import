@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://di16ng7e2ma1o"
-path="res://.godot/imported/woodcrate v2.png-e7e5c651168a5955f5d4cfd057b09acf.ctex"
+uid="uid://cv7u3yxtdpqm3"
+path="res://.godot/imported/small dynamite v1.png-05e6ae9db8e49da71db3e53c6e964c89.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/woodcrate v2.png"
-dest_files=["res://.godot/imported/woodcrate v2.png-e7e5c651168a5955f5d4cfd057b09acf.ctex"]
+source_file="res://textures/fx/small dynamite v1.png"
+dest_files=["res://.godot/imported/small dynamite v1.png-05e6ae9db8e49da71db3e53c6e964c89.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://besyv1ynxjkjy"
-path="res://.godot/imported/woodcrate v1.png-82cb423d1b40d9b4c7dbc015a54685cc.ctex"
+path="res://.godot/imported/woodcrate v1.png-4b3c445b416a3a8e36992bba59e06082.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/woodcrate v1.png"
-dest_files=["res://.godot/imported/woodcrate v1.png-82cb423d1b40d9b4c7dbc015a54685cc.ctex"]
+source_file="res://textures/actors/woodcrate v1.png"
+dest_files=["res://.godot/imported/woodcrate v1.png-4b3c445b416a3a8e36992bba59e06082.ctex"]
 
 [params]
 

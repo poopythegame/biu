@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://haj74n5mlso3" path="res://scripts/player/player.gd" id="1_tou0u"]
 [ext_resource type="PackedScene" uid="uid://ctq7bibpq7gvb" path="res://scenes/prefabs/fx/death_explosion.tscn" id="2_6o77n"]
-[ext_resource type="Texture2D" uid="uid://700gnv4h6qt1" path="res://textures/BIUplayer v1.png" id="2_56dyf"]
+[ext_resource type="Texture2D" uid="uid://700gnv4h6qt1" path="res://textures/actors/BIUplayer v1.png" id="2_56dyf"]
 [ext_resource type="Script" uid="uid://dbastcsunn50a" path="res://scripts/components/bomb_placer.gd" id="3_n0leu"]
 [ext_resource type="PackedScene" uid="uid://dsklufy68d1l4" path="res://scenes/prefabs/bomb.tscn" id="4_8cdkg"]
 [ext_resource type="Script" uid="uid://ba1lq1rbj6ndk" path="res://scripts/components/history_manager.gd" id="5_56dyf"]
