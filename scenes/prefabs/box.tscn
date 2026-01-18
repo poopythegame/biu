@@ -6,7 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0t13k"]
 shader = ExtResource("2_yonip")
-shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_color = Color(1, 1, 1, 0.5)
 shader_parameter/line_thickness = 8.00000038
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_weoh1"]

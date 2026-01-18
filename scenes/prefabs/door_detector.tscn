@@ -6,7 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t58y6"]
 shader = ExtResource("2_4xuud")
-shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_color = Color(1, 1, 1, 0.5)
 shader_parameter/line_thickness = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hnj8j"]
