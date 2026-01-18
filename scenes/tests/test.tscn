@@ -1,9 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://biht6m8hp5ua2"]
+[gd_scene load_steps=8 format=3 uid="uid://biht6m8hp5ua2"]
 
 [ext_resource type="PackedScene" uid="uid://dmobj48t0e52h" path="res://terrains/biu_world.ldtk" id="1_8cg7g"]
 [ext_resource type="PackedScene" uid="uid://cmjakkvxvdbgv" path="res://scenes/gui/pause_menu.tscn" id="1_weoh1"]
 [ext_resource type="PackedScene" uid="uid://bff2w370b4ou8" path="res://scenes/prefabs/player.tscn" id="2_syyn5"]
 [ext_resource type="Script" uid="uid://cw48i34tff1gk" path="res://scripts/actors/camera_2d.gd" id="3_weoh1"]
+[ext_resource type="PackedScene" uid="uid://3ejdt1uohona" path="res://scenes/prefabs/lighting.tscn" id="5_8ivcm"]
+
+[sub_resource type="Gradient" id="Gradient_ajgsl"]
+offsets = PackedFloat32Array(0, 0.9201878)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k6w2u"]
+gradient = SubResource("Gradient_ajgsl")
+width = 180
+height = 180
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.89320385, 0.13915858)
 
 [node name="Test" type="Node2D"]
 
@@ -16,6 +29,10 @@
 [node name="Player" parent="." instance=ExtResource("2_syyn5")]
 position = Vector2(984, 472)
 
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_k6w2u")
+
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player", "levels_parent")]
 position = Vector2(144, 80)
 zoom = Vector2(4, 4)
@@ -25,3 +42,5 @@ levels_parent = NodePath("../biu_world")
 follow_speed = 5.0
 transition_type = 5
 debug_draw = false
+
+[node name="Lighting" parent="." instance=ExtResource("5_8ivcm")]
