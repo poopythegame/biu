@@ -46,6 +46,10 @@ func become_bridge(water_collider: Node) -> void:
 	collision_layer = 32
 	collision_mask = 0
 	
+	# Disable light occluders so light passes over the bridge
+	for child in find_children("*", "LightOccluder2D"):
+		child.visible = false
+	
 	_water_collider = water_collider
 	
 	if ClassDB.class_exists("TileMapLayer") and water_collider.is_class("TileMapLayer"):
@@ -85,6 +89,10 @@ func restore_water() -> void:
 	add_to_group("box")
 	collision_layer = _initial_layer
 	collision_mask = _initial_mask
+
+	# Re-enable light occluders
+	for child in find_children("*", "LightOccluder2D"):
+		child.visible = true
 
 func is_floating_object() -> bool:
 	return is_floating
@@ -164,6 +172,10 @@ func become_bridge_from_data(w_data: Dictionary) -> void:
 	collision_layer = 32
 	collision_mask = 0
 	
+	# Disable light occluders so light passes over the bridge
+	for child in find_children("*", "LightOccluder2D"):
+		child.visible = false
+
 	# SERIALIZATION FIX: Restore Object from NodePath
 	if w_data.has("collider_path") and not str(w_data.collider_path).is_empty():
 		_water_collider = get_node_or_null(w_data.collider_path)
