@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bff2w370b4ou8"]
+[gd_scene load_steps=10 format=3 uid="uid://bff2w370b4ou8"]
 
-[ext_resource type="Texture2D" uid="uid://t731mpyiiedy" path="res://textures/icon.svg" id="1_06qtw"]
 [ext_resource type="Script" uid="uid://haj74n5mlso3" path="res://scripts/player/player.gd" id="1_tou0u"]
+[ext_resource type="PackedScene" uid="uid://ctq7bibpq7gvb" path="res://scenes/prefabs/fx/death_explosion.tscn" id="2_6o77n"]
+[ext_resource type="Texture2D" uid="uid://700gnv4h6qt1" path="res://textures/actors/BIUplayer v1.png" id="2_56dyf"]
 [ext_resource type="Script" uid="uid://dbastcsunn50a" path="res://scripts/components/bomb_placer.gd" id="3_n0leu"]
 [ext_resource type="PackedScene" uid="uid://dsklufy68d1l4" path="res://scenes/prefabs/bomb.tscn" id="4_8cdkg"]
 [ext_resource type="Script" uid="uid://ba1lq1rbj6ndk" path="res://scripts/components/history_manager.gd" id="5_56dyf"]
@@ -9,12 +10,25 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tou0u"]
 size = Vector2(16, 16)
 
+[sub_resource type="Gradient" id="Gradient_ajgsl"]
+offsets = PackedFloat32Array(0, 0.9201878)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6o77n"]
+gradient = SubResource("Gradient_ajgsl")
+width = 180
+height = 180
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.89320385, 0.13915858)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_tou0u")
+death_effect_scene = ExtResource("2_6o77n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.125, 0.125)
-texture = ExtResource("1_06qtw")
+texture = ExtResource("2_56dyf")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 
@@ -27,3 +41,9 @@ bomb_scene = ExtResource("4_8cdkg")
 
 [node name="HistoryManager" type="Node" parent="."]
 script = ExtResource("5_56dyf")
+max_history = 500
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.5
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_6o77n")

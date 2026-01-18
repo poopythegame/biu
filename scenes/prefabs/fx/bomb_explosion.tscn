@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://1cyege8qdlkh"]
+
+[ext_resource type="Script" uid="uid://djiwcoagnantr" path="res://scripts/fx/bomb_explosion.gd" id="1_wem4s"]
+
+[node name="BombExplosion" type="Node2D"]
+script = ExtResource("1_wem4s")
+particle_color = Color(0.93876475, 0.7466861, 0.69229466, 1)
