@@ -1,4 +1,3 @@
-# scripts/actors/camera_2d.gd
 extends Camera2D
 
 const SHAKE_MANAGER_SCRIPT = preload("res://scripts/components/screen_shake_manager.gd")
@@ -16,6 +15,7 @@ const SHAKE_MANAGER_SCRIPT = preload("res://scripts/components/screen_shake_mana
 @export var transition_type: Tween.TransitionType = Tween.TRANS_BACK
 @export var transition_ease: Tween.EaseType = Tween.EASE_OUT
 @export var debug_draw: bool = true 
+@export var mouse_lean_strength: float = 0.5
 
 # ------------------------------------------------------------------------------
 # Internal State
@@ -23,12 +23,11 @@ const SHAKE_MANAGER_SCRIPT = preload("res://scripts/components/screen_shake_mana
 var current_level: Node2D = null
 var is_transitioning: bool = false
 var view_size: Vector2
-var shake_manager: Node = null # [NEW] Reference to the manager
+var shake_manager: Node = null # Reference to the manager
 
 func _ready() -> void:
 	position_smoothing_enabled = false
 	
-	# [NEW] Initialize Screen Shake Manager automatically
 	shake_manager = SHAKE_MANAGER_SCRIPT.new()
 	shake_manager.name = "ScreenShakeManager"
 	add_child(shake_manager)
@@ -45,10 +44,17 @@ func _ready() -> void:
 		else:
 			print("Warning: Player started in the void (no level found).")
 
-# [NEW] Public method to trigger shake
 func shake_screen(intensity: float = 0.5) -> void:
 	if shake_manager and shake_manager.has_method("shake"):
 		shake_manager.shake(intensity)
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Only apply lean if we are tracking a level and not currently transitioning rooms
+	if event is InputEventMouseMotion and current_level and not is_transitioning:
+		# Add the mouse delta directly to the global position.
+		# The _process loop will lerp this back to the target, creating a spring effect.
+		# We divide by zoom so the feeling is consistent across zoom levels.
+		global_position += event.relative * mouse_lean_strength / zoom
 
 func _process(delta: float) -> void:
 	if not player: return
