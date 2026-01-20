@@ -110,9 +110,26 @@ func on_level_entered() -> void:
 		has_pending_level_entry = true
 		return
 
+	# [NEW] Check if we are on floating ground (Layer 32)
+	# This prevents saving if standing on a temporary bridge/bomb
+	if _is_on_floating_ground():
+		print("Level entered on floating object - Checkpoint skipped.")
+		return
+
 	# Normal movement (safe): Save checkpoint immediately.
 	if history_manager:
 		history_manager.save_checkpoint()
+
+func _is_on_floating_ground() -> bool:
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = global_position
+	query.collide_with_bodies = true
+	# Layer 32 is used for floating boxes in box.gd
+	query.collision_mask = 32 
+	
+	var results = space_state.intersect_point(query)
+	return results.size() > 0
 
 func reset_level() -> void:
 	if history_manager:
@@ -321,7 +338,8 @@ func apply_knockback(direction: Vector2, distance: int) -> void:
 			is_knockback_active = false
 			if has_pending_level_entry:
 				has_pending_level_entry = false
-				if history_manager:
+				# [NEW] Also check here so we don't save if knockback lands us on a bomb
+				if history_manager and not _is_on_floating_ground():
 					history_manager.save_checkpoint()
 	)
 
