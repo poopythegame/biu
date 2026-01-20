@@ -25,6 +25,14 @@ func _ready() -> void:
 	_initial_layer = collision_layer
 	_initial_mask = collision_mask
 	
+	# [FIX] Make material unique to this instance so we don't affect other boxes/bombs
+	if material is ShaderMaterial:
+		material = material.duplicate()
+	
+	var sprite = find_child("*Sprite*", true, false)
+	if sprite and sprite.material is ShaderMaterial:
+		sprite.material = sprite.material.duplicate()
+	
 	_set_outline_enabled(true)
 
 func check_on_water() -> void:
