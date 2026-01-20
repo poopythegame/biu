@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxmirugxqpfci"]
+
+[ext_resource type="Script" uid="uid://d4hvv7d7k1508" path="res://scripts/gui/main_menu/main_menu.gd" id="1_jl0ue"]
+
+[node name="MAIN_MENU" type="Node2D"]
+
+[node name="base_control" type="Control" parent="." node_paths=PackedStringArray("new_game_button", "continue_button")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_jl0ue")
+new_game_button = NodePath("CenterContainer/VBoxContainer/NewgameButton")
+continue_button = NodePath("CenterContainer/VBoxContainer/ContinueButton")
+
+[node name="the_manliest_color" type="ColorRect" parent="base_control"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(1, 0, 1, 1)
+
+[node name="pro_gamer_text" type="Label" parent="base_control"]
+layout_mode = 0
+offset_left = 296.0
+offset_right = 831.0
+offset_bottom = 118.0
+theme_override_colors/font_color = Color(0, 0, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.9529412, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 9
+theme_override_constants/shadow_offset_y = 7
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 86
+text = "SUP GAMERS"
+
+[node name="CenterContainer" type="CenterContainer" parent="base_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="base_control/CenterContainer"]
+layout_mode = 2
+
+[node name="NewgameButton" type="Button" parent="base_control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "New Game"
+
+[node name="ContinueButton" type="Button" parent="base_control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Continue"

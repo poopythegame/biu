@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bceygop5vimpd"]
+
+[ext_resource type="Script" uid="uid://bwjjfrtuffsmi" path="res://scripts/fx/diagonal_explosion.gd" id="1_yp5ll"]
+
+[node name="DoorActivation" type="Node2D"]
+script = ExtResource("1_yp5ll")

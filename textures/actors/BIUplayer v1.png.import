@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfk2mft05qnqq"
-path="res://.godot/imported/simple_tileset.png-844a29d5b4094eff49e02ca73347bbb0.ctex"
+uid="uid://700gnv4h6qt1"
+path="res://.godot/imported/BIUplayer v1.png-0045d44ae91e8abbd7dfca86071459d7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://terrains/simple_tileset.png"
-dest_files=["res://.godot/imported/simple_tileset.png-844a29d5b4094eff49e02ca73347bbb0.ctex"]
+source_file="res://textures/actors/BIUplayer v1.png"
+dest_files=["res://.godot/imported/BIUplayer v1.png-0045d44ae91e8abbd7dfca86071459d7.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgou425hjavvg"
-path="res://.godot/imported/voda_pesok_trava_revision_2.png-9525cf443949452a2ab07f4332182b51.ctex"
+uid="uid://d07mg4yq2nq4x"
+path="res://.godot/imported/Steampunk Brick NEW.png-8452b739ee6112a22c5c5d5e8c244a6f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://terrains/voda_pesok_trava_revision_2.png"
-dest_files=["res://.godot/imported/voda_pesok_trava_revision_2.png-9525cf443949452a2ab07f4332182b51.ctex"]
+source_file="res://textures/actors/Steampunk Brick NEW.png"
+dest_files=["res://.godot/imported/Steampunk Brick NEW.png-8452b739ee6112a22c5c5d5e8c244a6f.ctex"]
 
 [params]
 

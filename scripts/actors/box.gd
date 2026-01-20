@@ -16,11 +16,24 @@ var _water_atlas_coords: Vector2i = Vector2i(-1, -1)
 var _initial_layer: int
 var _initial_mask: int
 
+# Track the tween so we can kill it on undo
+var move_tween: Tween
+
 func _ready() -> void:
 	add_to_group("box")
 	add_to_group("revertable")
 	_initial_layer = collision_layer
 	_initial_mask = collision_mask
+	
+	# [FIX] Make material unique to this instance so we don't affect other boxes/bombs
+	if material is ShaderMaterial:
+		material = material.duplicate()
+	
+	var sprite = find_child("*Sprite*", true, false)
+	if sprite and sprite.material is ShaderMaterial:
+		sprite.material = sprite.material.duplicate()
+	
+	_set_outline_enabled(true)
 
 func check_on_water() -> void:
 	var space_state = get_world_2d().direct_space_state
@@ -41,10 +54,15 @@ func become_bridge(water_collider: Node) -> void:
 	
 	modulate = Color(0.7, 0.7, 0.8) 
 	remove_from_group("box")
+	_set_outline_enabled(false)
 	
 	# Move to Layer 6 (Bit 32) so Player walks over it, but Bomb detects it
 	collision_layer = 32
 	collision_mask = 0
+	
+	# Disable light occluders so light passes over the bridge
+	for child in find_children("*", "LightOccluder2D"):
+		child.visible = false
 	
 	_water_collider = water_collider
 	
@@ -83,8 +101,13 @@ func restore_water() -> void:
 	
 	modulate = Color.WHITE
 	add_to_group("box")
+	_set_outline_enabled(true)
 	collision_layer = _initial_layer
 	collision_mask = _initial_mask
+
+	# Re-enable light occluders
+	for child in find_children("*", "LightOccluder2D"):
+		child.visible = true
 
 func is_floating_object() -> bool:
 	return is_floating
@@ -101,7 +124,6 @@ func apply_knockback(dir: Vector2, max_dist: int) -> void:
 		var query = PhysicsPointQueryParameters2D.new()
 		query.position = check_pos
 		
-		# UPDATED: Include Layer 1 (Player) so the box stops at the player
 		# Mask 1 (Player) + 4 (Boxes) + 32 (Existing Bridges)
 		query.collision_mask = 1 + 4 + 32 
 		
@@ -111,34 +133,41 @@ func apply_knockback(dir: Vector2, max_dist: int) -> void:
 		
 		target_pos = check_pos
 
-	# If we are actually moving and were floating, restore the water behind us
 	if target_pos != global_position and is_floating:
 		restore_water()
 
 	# Check if Player is on top of us and move them too
 	var p_query = PhysicsPointQueryParameters2D.new()
 	p_query.position = global_position
-	p_query.collision_mask = 0xFFFFFFFF # Check everything
+	p_query.collision_mask = 0xFFFFFFFF 
 	p_query.collide_with_bodies = true
 	
 	var p_results = space_state.intersect_point(p_query)
 	for result in p_results:
 		var col = result.collider
-		# If the collider is the player (checks via method presence), move them
 		if col.has_method("carried_by_box"):
 			col.carried_by_box(target_pos, 0.4)
 
-	var tween = create_tween()
-	tween.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "global_position", target_pos, 0.4)
-	tween.tween_callback(check_on_water)
+	# Use the class-level tween variable
+	if move_tween: move_tween.kill()
+	move_tween = create_tween()
+	
+	move_tween.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	move_tween.tween_property(self, "global_position", target_pos, 0.4)
+	move_tween.tween_callback(check_on_water)
+
 func get_snapshot() -> Dictionary:
+	# SERIALIZATION FIX: Convert Object reference to NodePath
+	var water_path = ""
+	if is_instance_valid(_water_collider):
+		water_path = _water_collider.get_path()
+
 	return {
-		"node": self,
+		# Remove "node": self (Not serializable)
 		"pos": global_position,
 		"is_floating": is_floating,
 		"water_data": {
-			"collider": _water_collider,
+			"collider_path": water_path, # Store Path string
 			"cell_pos": _water_cell_pos,
 			"source_id": _water_source_id,
 			"atlas_coords": _water_atlas_coords
@@ -146,24 +175,38 @@ func get_snapshot() -> Dictionary:
 	}
 
 func restore_snapshot(data: Dictionary) -> void:
+	# Always restore potential water at current position first.
+	# This ensures we don't leave voids when teleporting from water to water.
+	if is_floating:
+		restore_water()
+	
 	global_position = data.pos
 	
-	# Handle State Transition: Floating <-> Solid
-	if data.is_floating and not is_floating:
-		# Force into floating state (without needing collision check)
+	# Apply saved state regardless of previous state
+	if data.is_floating:
 		become_bridge_from_data(data.water_data)
-	elif not data.is_floating and is_floating:
-		restore_water()
+		_set_outline_enabled(false) 
+	else:
+		_set_outline_enabled(true) 
 
 func become_bridge_from_data(w_data: Dictionary) -> void:
-	# Manually set state to floating using saved data
 	is_floating = true
 	modulate = Color(0.7, 0.7, 0.8)
 	remove_from_group("box")
+	_set_outline_enabled(false)
 	collision_layer = 32
 	collision_mask = 0
 	
-	_water_collider = w_data.collider
+	# Disable light occluders so light passes over the bridge
+	for child in find_children("*", "LightOccluder2D"):
+		child.visible = false
+
+	# SERIALIZATION FIX: Restore Object from NodePath
+	if w_data.has("collider_path") and not str(w_data.collider_path).is_empty():
+		_water_collider = get_node_or_null(w_data.collider_path)
+	elif w_data.has("collider"): # Backwards compatibility if needed
+		_water_collider = w_data.collider
+
 	_water_cell_pos = w_data.cell_pos
 	_water_source_id = w_data.source_id
 	_water_atlas_coords = w_data.atlas_coords
@@ -171,19 +214,27 @@ func become_bridge_from_data(w_data: Dictionary) -> void:
 	# Ensure the tile is actually removed (visually)
 	if is_instance_valid(_water_collider):
 		if _water_collider is TileMapLayer or _water_collider is TileMap:
-			# Note: Simplify based on your version, assuming standard set_cell methods
-			if _water_collider.has_method("set_cell"):
-				# Handle TileMap vs TileMapLayer signature differences
-				if _water_collider is TileMap:
-					_water_collider.set_cell(0, _water_cell_pos, -1)
-				else:
-					_water_collider.set_cell(_water_cell_pos, -1)
+			if _water_collider is TileMap:
+				_water_collider.set_cell(0, _water_cell_pos, -1)
+			else:
+				_water_collider.set_cell(_water_cell_pos, -1)
+
 func record_data() -> Dictionary:
 	return get_snapshot()
 
 func restore_data(data: Dictionary) -> void:
 	restore_snapshot(data)
 	
-	# Stop any active movement tweens immediately
-	var t = create_tween()
-	t.kill()
+	# Properly kill the specific tween
+	if move_tween:
+		move_tween.kill()
+func _set_outline_enabled(is_enabled: bool) -> void:
+	# 1. Check if material is on the Box node itself
+	if material is ShaderMaterial:
+		material.set_shader_parameter("enabled", is_enabled)
+	
+	# 2. Check for visual children (Sprite2D or AnimatedSprite2D)
+	# This handles cases where the shader is applied to the visual component
+	var sprite = find_child("*Sprite*", true, false)
+	if sprite and sprite.get("material") is ShaderMaterial:
+		sprite.material.set_shader_parameter("enabled", is_enabled)

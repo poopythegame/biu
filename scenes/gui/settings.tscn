@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl446doy4ytog"]
+
+[ext_resource type="Script" uid="uid://c6cbuu3u5rp38" path="res://scripts/gui/settings.gd" id="1_m3bbi"]
+
+[node name="settings" type="Control"]
+z_index = 1227
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m3bbi")
+
+[node name="Label" type="Label" parent="."]
+z_index = 290
+layout_mode = 0
+offset_left = 28.0
+offset_top = 34.0
+offset_right = 420.0
+offset_bottom = 125.0
+theme_override_font_sizes/font_size = 66
+text = "* SETTINGS: "
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(1, 0, 1, 1)
+
+[node name="return to game" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 8.0
+offset_right = 1140.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 32
+text = "close"
+
+[connection signal="pressed" from="return to game" to="." method="_on_return_to_game_pressed"]

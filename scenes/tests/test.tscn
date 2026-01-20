@@ -1,15 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://biht6m8hp5ua2"]
+[gd_scene load_steps=9 format=3 uid="uid://biht6m8hp5ua2"]
 
 [ext_resource type="PackedScene" uid="uid://dmobj48t0e52h" path="res://terrains/biu_world.ldtk" id="1_8cg7g"]
+[ext_resource type="PackedScene" uid="uid://d0uk6nmmnjg0l" path="res://scenes/prefabs/fx/ambient_particles.tscn" id="1_ajgsl"]
+[ext_resource type="PackedScene" uid="uid://cmjakkvxvdbgv" path="res://scenes/gui/pause_menu.tscn" id="1_weoh1"]
 [ext_resource type="PackedScene" uid="uid://bff2w370b4ou8" path="res://scenes/prefabs/player.tscn" id="2_syyn5"]
 [ext_resource type="Script" uid="uid://cw48i34tff1gk" path="res://scripts/actors/camera_2d.gd" id="3_weoh1"]
+[ext_resource type="PackedScene" uid="uid://3ejdt1uohona" path="res://scenes/prefabs/lighting.tscn" id="5_8ivcm"]
+[ext_resource type="PackedScene" uid="uid://bl446doy4ytog" path="res://scenes/gui/settings.tscn" id="7_k6w2u"]
+
+[sub_resource type="Environment" id="Environment_ajgsl"]
+background_mode = 3
+tonemap_mode = 3
+glow_enabled = true
+glow_intensity = 3.0
+glow_bloom = 0.3
 
 [node name="Test" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("1_weoh1")]
+
+[node name="settings" parent="CanvasLayer" instance=ExtResource("7_k6w2u")]
 
 [node name="biu_world" parent="." instance=ExtResource("1_8cg7g")]
 
 [node name="Player" parent="." instance=ExtResource("2_syyn5")]
-position = Vector2(72, -40)
+position = Vector2(1112, 1048)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player", "levels_parent")]
 position = Vector2(144, 80)
@@ -20,3 +37,13 @@ levels_parent = NodePath("../biu_world")
 follow_speed = 5.0
 transition_type = 5
 debug_draw = false
+
+[node name="Lighting" parent="." instance=ExtResource("5_8ivcm")]
+
+[node name="AmbientParticles" parent="." instance=ExtResource("1_ajgsl")]
+particle_count = 60
+min_lifespan = 6.0
+max_lifespan = 12.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ajgsl")
