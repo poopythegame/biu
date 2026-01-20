@@ -18,7 +18,7 @@ func _physics_process(_delta: float) -> void:
 	var found_valid_body = false
 	
 	for body in bodies:
-		if body.is_in_group("box"):
+		if body.is_in_group("box") or body.is_in_group("player"):
 			if global_position.distance_to(body.global_position) <= 8.0:
 				found_valid_body = true
 				break

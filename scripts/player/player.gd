@@ -1,4 +1,4 @@
-extends Node2D
+extends CharacterBody2D
 
 # SETTINGS
 @export var tile_size: int = 16

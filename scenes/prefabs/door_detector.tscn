@@ -13,11 +13,11 @@ shader_parameter/line_thickness = 1.0
 size = Vector2(16, 16)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lbsto"]
-polygon = PackedVector2Array(-5, 0, -5, 6, 6, 6, 6, 0)
+polygon = PackedVector2Array(-5, 2, -5, 6, 6, 6, 6, 2)
 
 [node name="DoorDetector" type="Area2D"]
 collision_layer = 0
-collision_mask = 14
+collision_mask = 15
 script = ExtResource("1_lbsto")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
